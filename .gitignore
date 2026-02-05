@@ -1,0 +1,9 @@
+checkpoints/
+
+__pycache__/
+
+results/
+
+video_input/
+
+video_output/
