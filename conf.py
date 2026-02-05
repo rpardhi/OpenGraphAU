@@ -14,7 +14,7 @@ import yaml
 
 parser = argparse.ArgumentParser(description='PyTorch Training')
 # Datasets
-parser.add_argument('--dataset', default='hybrid', type=str, choices=['hybrid'], help="experiment dataset hybrid Dataset")
+parser.add_argument('--dataset', default='hybrid', type=str, choices=['BP4D','DISFA','hybrid'], help="experiment dataset BP4D / DISFA / hybrid Dataset")
 
 # Param
 parser.add_argument('-b','--batch-size', default=64, type=int, metavar='N', help='mini-batch size (default: 128)')
@@ -44,8 +44,9 @@ parser.add_argument('--resume', default='', type=str, metavar='path', help='path
 #demo img input
 parser.add_argument('--input', default='', type=str, metavar='path', help='path to img for predicting')
 parser.add_argument('--draw_text', action='store_true', help='draw AU predicting results on img')
-
-
+parser.add_argument('--stage', default=1, type=int, choices=[1, 2], help='model stage')
+parser.add_argument('--outdir', default='processed', type=str, metavar='path', help='path to save results')
+parser.add_argument('--frames_divide', default=1, type=int, help='process every Nth frame to speed up')
 # ------------------------------
 
 
@@ -90,17 +91,17 @@ def get_config():
     cfg = parser2dict()
     if cfg.dataset == 'BP4D':
         with open('config/BP4D_config.yaml', 'r') as f:
-            datasets_cfg = yaml.load(f)
+            datasets_cfg = yaml.safe_load(f)
             datasets_cfg = edict(datasets_cfg)
 
     elif cfg.dataset == 'DISFA':
         with open('config/DISFA_config.yaml', 'r') as f:
-            datasets_cfg = yaml.load(f)
+            datasets_cfg = yaml.safe_load(f)
             datasets_cfg = edict(datasets_cfg)
 
     elif cfg.dataset == 'hybrid':
         with open('config/hybrid_config.yaml', 'r') as f:
-            datasets_cfg = yaml.load(f)
+            datasets_cfg = yaml.safe_load(f)
             datasets_cfg = edict(datasets_cfg)
     else:
         raise Exception("Unkown Datsets:",cfg.dataset)
@@ -176,6 +177,10 @@ def set_logger(cfg):
         outname = 'train.log'
 
     outdir = cfg['outdir']
+    # Check if outdir exists if not create it
+    # Check if output directory exists, if not create it
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
     log_path = os.path.join(outdir,outname)
 
     logger = logging.getLogger()
