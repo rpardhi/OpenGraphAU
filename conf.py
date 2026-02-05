@@ -1,3 +1,5 @@
+#----- adapated by Jonas to extract AUs from videos -----#
+
 import argparse
 from easydict import EasyDict as edict
 import torch.backends.cudnn as cudnn

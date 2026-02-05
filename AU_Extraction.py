@@ -1,3 +1,5 @@
+#----- adapated by Jonas to extract AUs from videos -----#
+
 import os
 import numpy as np
 import torch
