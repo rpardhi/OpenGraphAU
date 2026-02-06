@@ -36,12 +36,12 @@ def main(conf):
     participant_name = os.path.basename(os.path.normpath(vid_path))
     logging.info(f"Processing participant: {participant_name}")
     # Check if directory called participant_name exists in conf.outdir, if not create it
-    participant_outdir = os.path.join(conf.outdir, participant_name)  
+    participant_outdir = os.path.join(conf.outdir)#, participant_name)  
     if not os.path.exists(participant_outdir):
         os.makedirs(participant_outdir)  
     # Collect all files in vid_path ending with ee.MP4
     for file in os.listdir(vid_path):
-        if file.endswith('.mp4'):#'ee.MP4'):
+        if file.endswith('.mkv'):#'ee.MP4'):
             vid_file_path = os.path.join(vid_path, file)
             # Check if output directory exists, if not create it
             if not os.path.exists(conf.outdir):
@@ -116,7 +116,7 @@ def main(conf):
             # Save prediction as csv
             # Create CSV path based on file name
             csv_name = os.path.splitext(file)[0] + '.csv'
-            csv_path = os.path.join(conf.outdir, participant_name, csv_name)
+            csv_path = os.path.join(conf.outdir, csv_name)#, participant_name, csv_name)
 
 
             #csv_path = conf.input.split('.')[0] + '_predictions.csv'
